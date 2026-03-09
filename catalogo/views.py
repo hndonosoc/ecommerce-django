@@ -169,6 +169,7 @@ def gestionar_producto(request, id=None):
         if form.is_valid():
             form.save()
             return redirect('listar_productos')
+    else:
         form = ProductForm(instance=producto)
         
     return render(request, 'catalogo/formulario_producto.html', {'form': form})

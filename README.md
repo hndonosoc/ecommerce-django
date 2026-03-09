@@ -187,3 +187,7 @@ Checkout (requiere login)
 ## Autor
 
 Hermes Donoso
+
+Enlace a repositorio público
+
+https://github.com/hndonosoc/ecommerce-django.git
