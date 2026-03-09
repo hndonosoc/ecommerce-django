@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Catálogo{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4 modern-font fw-bold text-primary">Catálogo de Productos</h2>
+
+<form method="GET" class="mb-4" action="{% url 'catalogo' %}">
+    <div class="input-group">
+        <input type="text" name="buscar" class="form-control" placeholder="Buscar producto...">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </div>
+</form>
+
+<div class="mb-4">
+    <h5 class="fw-bold">Categorías</h5>
+    <a href="{% url 'catalogo' %}" class="btn btn-outline-primary btn-sm">Todas</a>
+    {% for categoria in categorias %}
+    <a href="{% url 'catalogo' %}?categoria={{ categoria.id }}" class="btn btn-outline-primary btn-sm">
+        {{ categoria.nombre }}
+    </a>
+    {% endfor %}
+</div>
+
+<div class="row">
+    {% for producto in productos %}
+    <div class="col-md-4 mb-4">
+        <div class="card card-shadow h-100">
+            {% if producto.imagenes.first %}
+                <img src="{{ producto.imagenes.first.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+            {% else %}
+                <img src="{% static 'img/default_product.png' %}" class="card-img-top" alt="Sin imagen">
+            {% endif %}
+
+            <div class="card-body">
+                <h5 class="card-title fw-bold text-primary">{{ producto.nombre }}</h5>
+                <p class="text-muted">{{ producto.categoria }}</p>
+                <p>{{ producto.descripcion|truncatewords:15 }}</p>
+                <p class="fw-bold fs-5">${{ producto.precio }}</p>
+            </div>
+
+            <div class="card-footer text-center">
+                <a href="{% url 'producto_detalle' producto.id %}" class="btn btn-primary">Ver producto</a>
+                
+                <form action="{% url 'agregar_al_carrito' producto.id %}" method="post" class="mt-2">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Agregar al carrito</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No hay productos disponibles.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

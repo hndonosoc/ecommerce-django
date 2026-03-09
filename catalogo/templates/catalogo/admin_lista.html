@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-primary fw-bold mb-4">Administración de Productos</h2>
+    <a href="{% url 'crear_producto' %}" class="btn btn-success">
+        + Agregar Nuevo Producto
+    </a>
+    
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover table-striped align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="ps-4">Nombre</th>
+                        <th>Precio</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in productos %}
+                    <tr>
+                        <td class="ps-4 fw-bold">{{ p.nombre }}</td>
+                        <td>${{ p.precio }}</td>
+                        <td class="text-center">
+                            <a href="{% url 'editar_producto' p.id %}" class="btn btn-sm btn-warning">Editar</a>
+                            <form action="{% url 'eliminar_producto' p.id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro?')">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center py-4">No hay productos cargados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Contacto{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <h2 class="mb-4 text-primary fw-bold text-center">Contáctanos</h2>
+            <p class="text-center text-muted mb-4">¿Tienes alguna duda? Escríbenos y te responderemos a la brevedad.</p>
+
+            <form method="POST" class="card card-shadow border-0 p-4">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="nombre" class="form-label fw-semibold">Nombre</label>
+                    <input type="text" name="nombre" id="nombre" class="form-control" required placeholder="Tu nombre completo">
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-semibold">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" required placeholder="nombre@ejemplo.com">
+                </div>
+
+                <div class="mb-4">
+                    <label for="mensaje" class="form-label fw-semibold">Mensaje</label>
+                    <textarea name="mensaje" id="mensaje" class="form-control" rows="5" required placeholder="Escribe aquí tu consulta..."></textarea>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg">Enviar mensaje</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

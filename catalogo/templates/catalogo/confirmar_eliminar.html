@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Eliminar Producto{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            
+            <div class="card card-shadow border-0 p-4 text-center">
+                <div class="mb-4">
+                    <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                    <h3 class="fw-bold mt-2">¿Eliminar producto?</h3>
+                    <p class="text-muted">
+                        ¿Estás seguro de que quieres eliminar <strong>{{ producto.nombre }}</strong>? 
+                        Esta acción no se puede deshacer.
+                    </p>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg">
+                            Sí, eliminar permanentemente
+                        </button>
+                        
+                        <a href="{% url 'products:admin_productos' %}" class="btn btn-outline-secondary btn-lg">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

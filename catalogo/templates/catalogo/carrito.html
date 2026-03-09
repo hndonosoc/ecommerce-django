@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Carrito{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4 modern-font fw-bold text-primary">
+    Carrito de compras
+</h2>
+
+<div class="card card-shadow">
+    <div class="card-body">
+        <table class="table table-dark table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th class="text-center">Cantidad</th>
+                    <th class="text-end">Subtotal</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td class="fw-semibold">{{ item.producto.nombre }}</td>
+                    <td class="text-center">
+                        <span class="badge bg-primary fs-6">{{ item.cantidad }}</span>
+                    </td>
+                    <td class="text-end fw-bold">${{ item.subtotal }}</td>
+                    <td class="text-center">
+                        <form action="{% url 'quitar_del_carrito' item.producto.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted">
+                        Tu carrito está vacío
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card-footer">
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="{% url 'catalogo' %}" class="btn btn-outline-light">
+                ← Seguir comprando
+            </a>
+            <h4 class="fw-bold m-0">
+                Total: <span class="text-primary">${{ total }}</span>
+            </h4>
+            <div class="text-end">
+                <a href="{% url 'checkout' %}" class="btn btn-success">
+                    Finalizar compra
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

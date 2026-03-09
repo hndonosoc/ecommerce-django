@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ producto.nombre }}{% endblock %}
+
+{% block content %}
+
+<div class="row g-5">
+  <div class="col-md-5">
+    <div id="carouselProducto" class="carousel slide shadow-sm rounded overflow-hidden" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for img in producto.imagenes.all %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <img src="{{ img.imagen.url }}" class="d-block w-100" alt="{{ producto.nombre }}">
+          </div>
+        {% empty %}
+          <div class="carousel-item active">
+            <img src="{% static 'img/default_product.png' %}" class="d-block w-100" alt="Imagen no disponible">
+          </div>
+        {% endfor %}
+      </div>
+      {% if producto.imagenes.count > 1 %}
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselProducto" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselProducto" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-md-7">
+    <h2 class="fw-bold text-primary">{{ producto.nombre }}</h2>
+    <p class="text-muted fs-5">Categoría: {{ producto.categoria }}</p>
+    <p class="mt-4 fs-6">{{ producto.descripcion }}</p>
+    
+    <h3 class="text-success mt-3 fw-bold">${{ producto.precio }}</h3>
+    <p class="text-secondary">Stock disponible: <strong>{{ producto.stock }}</strong></p>
+
+    <div class="mt-4">
+      <form action="{% url 'agregar_al_carrito' producto.id %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success btn-lg">Agregar al carrito</button>
+      </form>
+      
+      <a href="{% url 'catalogo' %}" class="btn btn-outline-secondary btn-lg ms-2">Volver al catálogo</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+
+<div id="carouselExample" class="carousel slide mb-5" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    {% for producto in productos %}
+    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+      {% if producto.imagenes.first %}
+        <img src="{{ producto.imagenes.first.imagen.url }}" 
+             class="d-block w-100" 
+             style="height:400px; object-fit:cover;" 
+             alt="{{ producto.nombre }}">
+      {% else %}
+        <div class="d-flex align-items-center justify-content-center bg-secondary text-white" style="height:400px;">Sin imagen</div>
+      {% endif %}
+
+      <div class="carousel-caption bg-dark bg-opacity-50 rounded p-3">
+        <h5>{{ producto.nombre }}</h5>
+        <p>${{ producto.precio }}</p>
+        <a href="{% url 'producto_detalle' producto.id %}" class="btn btn-primary btn-sm">
+          Ver producto
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+
+<h2 class="mb-4 text-primary fw-bold">Productos destacados</h2>
+<div class="row">
+  {% for producto in productos %}
+  <div class="col-md-4 mb-4">
+    <div class="card card-shadow h-100">
+      <div class="card-body">
+        <h5 class="fw-bold">{{ producto.nombre }}</h5>
+        <p class="text-muted">{{ producto.categoria }}</p>
+        <p class="fs-5 fw-bold text-primary">${{ producto.precio }}</p>
+      </div>
+      <div class="card-footer text-center bg-white border-0">
+        <a href="{% url 'producto_detalle' producto.id %}" class="btn btn-primary">
+          Ver producto
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

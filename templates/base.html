@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <title>{% block title %}Ecommerce{% endblock %}</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'products/css/custom.css' %}">
+  
+  <style>
+    body, h1, h2, h3, h4, h5, .nav-link, .btn {
+        font-family: 'Orbitron', sans-serif !important;
+    }
+  </style>
+</head>
+<body class="custom-body">
+
+<nav class="navbar navbar-expand-lg custom-navbar shadow-sm">
+  <div class="container">
+    <a href="{% url 'home' %}">
+      <img src="{% static 'catalogo/img/candado_logo.png' %}" alt="Locked In" class="logo" style="height: 50px;">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link text-white" href="{% url 'home' %}">LOCKED IN</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="{% url 'catalogo' %}">Catálogo</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="{% url 'contacto' %}">Contacto</a></li>
+      </ul>
+
+      <form class="d-flex me-3" method="GET" action="{% url 'catalogo' %}">
+        <input class="form-control me-2" type="search" name="buscar" placeholder="Buscar producto">
+        <button class="btn btn-light" type="submit">Buscar</button>
+      </form>
+
+      <div class="d-flex align-items-center">
+        <a href="{% url 'ver_carrito' %}" class="btn btn-outline-light position-relative me-3">
+          🛒 Carrito
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{ carrito_total|default:"0" }}
+          </span>
+        </a>
+
+        {% if user.is_authenticated %}
+          {% if user.is_staff %}
+            <a href="{% url 'listar_productos' %}" class="btn btn-warning btn-sm me-2">Panel Admin</a>
+          {% endif %}
+          <span class="text-white me-2 small">Hola {{ user.username }}</span>
+          <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-outline-light btn-sm" type="submit">Salir</button>
+          </form>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-light btn-sm me-2">Login</a>
+          <a href="{% url 'registro' %}" class="text-white">Registrarse</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="container py-5">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="footer bg-dark text-white py-4 mt-5">
+    <div class="container">
+        <div class="row text-center text-md-start">
+            <div class="col-md-4 mb-3">
+              <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-2">
+                  <img src="{% static 'catalogo/img/candado_logo.png' %}" alt="Locked In" style="height: 50px;" class="me-2">
+                  <h4 class="text-uppercase fw-bold m-0">LOCKED IN</h4>
+              </div>
+              <p class="small text-muted mt-2">Tu tienda de accesorios de confianza. Calidad y seguridad en cada compra.</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h5 class="text-uppercase fw-bold">Enlaces</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'catalogo' %}" class="text-decoration-none text-white">Catálogo</a></li>
+                    <li><a href="{% url 'contacto' %}" class="text-decoration-none text-white">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h5 class="text-uppercase fw-bold">Contacto</h5>
+                <p class="small text-muted">📍 Coquimbo, Chile</p>
+                <p class="small text-muted">📧 soporte@lockedin.cl</p>
+            </div>
+        </div>
+        <hr class="border-secondary">
+        <div class="text-center small text-muted">
+            &copy; 2026 LOCKED IN - Todos los derechos reservados.
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

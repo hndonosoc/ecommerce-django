@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Listado de Productos{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+  <h2 class="modern-font fw-bold section-title">Listado de Productos</h2>
+  <a href="{% url 'products:create' %}" class="btn btn-primary px-4">
+    + Nuevo Producto
+  </a>
+</div>
+
+<div class="row">
+  {% for producto in productos %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 product-card shadow-sm border-0">
+        <div class="card-body d-flex flex-column">
+          
+          <h5 class="card-title fw-bold modern-font mb-2">{{ producto.nombre }}</h5>
+          <p class="category-text mb-3 text-muted">{{ producto.categoria|default:"Sin categoría" }}</p>
+
+          <div class="product-info mb-3">
+            <p class="mb-1"><strong>Precio:</strong> ${{ producto.precio }}</p>
+            <p class="mb-1"><strong>Stock:</strong> {{ producto.stock }}</p>
+            <p>
+              <strong>Estado:</strong> 
+              {% if producto.activo %}
+                <span class="badge bg-success">Activo</span>
+              {% else %}
+                <span class="badge bg-danger">Inactivo</span>
+              {% endif %}
+            </p>
+          </div>
+
+          <div class="mt-auto d-flex gap-2">
+            <a href="{% url 'products:edit' producto.id %}" class="btn btn-sm btn-outline-primary flex-grow-1">Editar</a>
+            
+            <form action="{% url 'products:delete' producto.id %}" method="post" class="flex-grow-1">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-outline-danger w-100" onclick="return confirm('¿Seguro?')">
+                Eliminar
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="text-center mt-5">
+      <p class="text-muted">No hay productos registrados.</p>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

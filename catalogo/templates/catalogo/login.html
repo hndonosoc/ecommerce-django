@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar sesión{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <h2 class="mb-4 text-primary fw-bold text-center">Iniciar sesión</h2>
+            
+            <div class="card card-shadow border-0 p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        {{ form.as_p }}
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            Ingresar
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <p class="text-center mt-3">
+                ¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
