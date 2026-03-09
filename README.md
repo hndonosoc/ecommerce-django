@@ -158,7 +158,7 @@ http://127.0.0.1:8000
 
 ---
 ### Panel de administración
-![Admin](docs/Panel_admin.png)
+![Admin](docs/panel_admin.png)
 
 ---
 
